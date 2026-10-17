@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm test:*)",
+      "Bash(npm run lighthouse)",
+      "Bash(npx playwright test:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch --show-current)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git checkout -- .)",
+      "Bash(git clean -fd:*)",
+      "Bash(ls:*)",
+      "WebSearch",
+      "WebFetch"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git rebase:*)",
+      "Bash(git switch main)",
+      "Bash(git checkout main)",
+      "Bash(git merge:*)",
+      "Bash(rm -rf:*)",
+      "Read(./.env*)"
+    ]
+  }
+}
