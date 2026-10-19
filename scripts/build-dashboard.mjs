@@ -1,11 +1,11 @@
 // Reads .claude/agents/*.md (active) and .claude/agents-parked/*.md (parked) and writes
-// ../agents-office/agents.generated.js so the dashboard
+// ../agent-office/agents.generated.js so the dashboard
 // always shows each agent's real tools, model and instructions.
 //   npm run dashboard
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const out_dir = '../agents-office';
+const out_dir = '../agent-office';
 const agents = {};
 const sources = [['.claude/agents', false], ['.claude/agents-parked', true]];
 
@@ -32,4 +32,4 @@ if (!existsSync(`${out_dir}/status.js`)) {
   writeFileSync(`${out_dir}/status.js`, 'window.STATUS = { run: null, agents: {} };\n');
 }
 console.log(`Dashboard data updated for ${Object.keys(agents).length} agents.`);
-console.log('Written to ../agents-office/agents.generated.js');
+console.log('Written to ../agent-office/agents.generated.js');

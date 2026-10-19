@@ -1,4 +1,4 @@
-# ai-agents: rules for every Claude session
+# agent-crew: rules for every Claude session
 
 ## What this repo is
 The home of an AI build crew: Claude Code agents and skills that improve a project living in
