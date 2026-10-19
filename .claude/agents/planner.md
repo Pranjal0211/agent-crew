@@ -42,7 +42,9 @@ Give each gap a 1–3 score on three things:
 | **Effort**: how much work | one file, < 30 min | 2–3 files, about 1 hour | many files or unclear how |
 | **Risk**: chance of breaking what works | new, separate piece | changes existing parts | rewrites core parts |
 
-**Priority = Value × 2 − Effort − Risk.** Highest wins. Ties: pick the one the user will notice most.
+**Priority = Value × 2 − Effort − Risk**, plus **+2 if it is a bug the owner would notice**
+(something that works wrong or gets in the way, not something missing). Broken things feel worse than missing ones.
+Highest wins. Ties: pick the one the user will notice most. Write bugs as `(bug +2)` in the score.
 
 ### 3. Pick one, and make it small
 The chosen task must fit in **one round: about 1 hour, at most 3 files**.
@@ -67,6 +69,9 @@ for example `- Show what each agent will do next (V3 E2 R1 = 3)`.
 # NNN: <short title in plain words>
 
 Status: ready
+
+> **In short:** <What the owner will see or be able to do after this, in everyday words. No file names or code terms.>
+> **Why:** <One plain sentence on why this matters most right now.>
 
 ## Goal
 <One sentence: what the user can do or see after this, that they can't now.>
@@ -95,7 +100,8 @@ Status: ready
 - **"Done when" items must be observable.** "Looks better" can't be checked; "each card shows a status label" can.
 - **One task per card.** If a card has "and" in the goal, it is probably two tasks.
 - **Only write inside the project's `ai/` folder.** Never touch code files or `VISION.md`.
-- Use plain words. The owner is new to this and reads every card.
+- Use plain words. The owner is new to this and reads every card. The "In short" lines are for the owner;
+  everything below them is for the Builder and Tester and can be precise.
 
 ## Examples
 
