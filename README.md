@@ -10,7 +10,8 @@ This repo holds only the agents; it never holds a product's code.
 | Planner (`planner.md`) | active, tested on Agent Office | Picks the most useful next task and writes a task card |
 | Builder (`builder.md`) | active, built task 001 | Writes the code for a task card and leaves handover notes |
 | Tester (`tester.md`) | active, passed task 001 | Checks the result in a real browser, saves it if it passes |
-| Team lead, Scout, Designer, Checker | parked in `.claude/agents-parked/` | Brought back once the first three work well |
+| Designer (`designer.md`) | active, not yet tested | Makes clickable prototypes (2-3 directions for big changes) for the owner to approve |
+| Team lead, Scout, Checker | parked in `.claude/agents-parked/` | Team lead comes next (step 4 of the Designer plan) |
 
 ## How we work on it
 Improve one agent at a time, test it on a practice project, look at the result together, tweak, repeat.
