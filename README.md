@@ -8,7 +8,7 @@ This repo holds only the agents; it never holds a product's code.
 | Agent | Status | Job |
 |---|---|---|
 | Planner (`planner.md`) | active, tested on Agent Office | Picks the most useful next task and writes a task card |
-| Builder (`developer.md`) | active, draft | Writes the code for a task card |
+| Builder (`builder.md`) | active, about to be tested | Writes the code for a task card and leaves handover notes |
 | Tester (`qa.md`) | active, draft | Checks the result in a real browser |
 | Team lead, Scout, Designer, Checker | parked in `.claude/agents-parked/` | Brought back once the first three work well |
 
