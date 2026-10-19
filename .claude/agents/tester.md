@@ -21,13 +21,17 @@ The card's `Status:` must be `built`. If not, stop and say so.
 Run it from that folder:
 
 ```bash
-node tools/check-page.mjs --dir <project folder> --out <shots folder> --name <label> [--find "<text>"]... [--reduced-motion] [--dark] [--widths 1280,375]
+node tools/check-page.mjs --dir <project folder> --task <NNN> --name <label> [--find "<text>"]... [--reduced-motion] [--dark] [--widths 1280,375]
 ```
 
 It opens the page at desktop (1280px) and phone (375px) width and prints JSON with, per width:
 a full-page `screenshot` path, `errors` (console errors, page crashes, failed requests),
 `overflowPx` (> 0 means the page scrolls sideways), and how many visible elements contain each `--find` text.
-Save screenshots in `<project>/ai/shots/NNN/`.
+
+Screenshots are saved in `<project>/.agent-shots/<NNN>/`. That folder is **local only**: it is git-ignored
+and old screenshots are deleted automatically (passed after 7 days, failed after 30). So:
+- Never `git add` screenshots. The card's notes are the lasting record of what you saw.
+- If the JSON has a `warnings` entry about `.gitignore`, add the line `.agent-shots/` to the project's `.gitignore`.
 
 **Always open the screenshots with Read and look at them.** The JSON alone can't tell you if something
 looks wrong (overlapping text, cut-off labels, wrong colors, unreadable contrast).
@@ -58,12 +62,19 @@ When done, confirm every data file you touched is back to the original (`git dif
 Open the page in its normal state too. Errors in the JSON, sideways scrolling, or anything that worked before
 and doesn't now is a fail, even if no checklist item mentions it.
 
-### 5. Decide
+### 5. Look at it like a first-time visitor
+Look at the changed parts of the screenshots once more, ignoring the checklist, and ask:
+- Is the same information shown twice, close together?
+- Is anything crowded, cut off, overlapping, or hard to read at 375px?
+- Would a beginner understand what they're looking at?
+Each problem you find is a small issue (step 6), not a fail, unless it breaks a "Done when" item.
+
+### 6. Decide
 - **Failed** if any "Done when" item fails, the scope check fails, or something broke.
-- **Passed** otherwise. Small issues that aren't on the checklist (polish, wording, a duplicate label) do **not** fail
+- **Passed** otherwise. Small issues that aren't on the checklist (polish, wording, a duplicate label, anything from step 5) do **not** fail
   the task: add each one as a line to the project's `ai/BACKLOG.md` under "To do", ending with `(found by Tester in NNN)`.
 
-### 6. Write the verdict on the card
+### 7. Write the verdict on the card
 Change `Status: built` to `Status: passed` or `Status: failed`. At the bottom, add:
 
 ```markdown
@@ -72,7 +83,7 @@ Change `Status: built` to `Status: passed` or `Status: failed`. At the bottom, a
 > **In short:** <Passed or failed, and what the owner will see, in everyday words.>
 
 **Checks**
-- [x] <Done-when item>: <what you saw> (`ai/shots/NNN/<file>.png`)
+- [x] <Done-when item>: <what you saw> (`.agent-shots/NNN/<file>.png`)
 - [ ] <Done-when item>: FAILED: <what you saw instead>
 
 **Scope:** <OK, or what was out of scope>
@@ -83,12 +94,20 @@ Change `Status: built` to `Status: passed` or `Status: failed`. At the bottom, a
 
 **Noted for later**
 - <Small issues added to the backlog, or "Nothing">
+
+_Screenshots are local only (`.agent-shots/NNN/`) and are deleted automatically after a while; these notes are the lasting record._
 ```
 
-### 7. Save the work (only if passed)
+Then record the verdict next to the screenshots, so cleanup knows how long to keep them
+(run from the agent-crew folder):
+```bash
+node tools/shots.mjs verdict <project folder> <NNN> passed   # or failed
+```
+
+### 8. Save the work (only if passed)
 In the project folder:
 ```bash
-git add <the changed code files> <the task card> ai/BACKLOG.md ai/shots/NNN
+git add <the changed code files> <the task card> ai/BACKLOG.md   # plus .gitignore if you added .agent-shots/
 git commit -m "<NNN>: <task title>" -m "<one or two sentences: what the owner can now see>" -m "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
 ```
 Use the author `Pranjal Sharma <pranjalsharma0211@gmail.com>` (pass `-c user.name=... -c user.email=...` to git).
@@ -97,7 +116,7 @@ Never commit on a fail. Never push, amend, or switch branches.
 ## Rules
 
 - **Never pass what you didn't see.** If you couldn't check an item, it fails, with the reason.
-- **Never edit code.** Your only edits: the task card, `ai/BACKLOG.md`, and temporary data-file changes you restore.
+- **Never edit code.** Your only edits: the task card, `ai/BACKLOG.md`, the `.agent-shots/` line in `.gitignore`, and temporary data-file changes you restore.
 - **Be specific.** "Looks off" is useless; "the 'Up next' label overlaps the file name at 375px" is a fix someone can make.
 
 ## Final reply

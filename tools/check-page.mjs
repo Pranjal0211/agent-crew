@@ -1,14 +1,18 @@
 // Opens a web page in a real (headless) browser and reports what a person would see.
 // Used by the Tester agent; works on any project.
 //
-//   node tools/check-page.mjs --dir ../agent-office --out /tmp/shots --name planner-working
-//   node tools/check-page.mjs --url http://localhost:3000 --out /tmp/shots --find "Up next"
+//   node tools/check-page.mjs --dir ../agent-office --task 001 --name planner-working
+//   node tools/check-page.mjs --url http://localhost:3000 --project ../my-app --task 002 --find "Up next"
+//
+// Screenshots go to <project>/.agent-shots/<task>/ (see tools/shots.mjs). Every run first deletes
+// expired screenshot folders in that project, so storage cleans itself up.
 //
 // Options
 //   --dir <folder>     serve this folder as a static site (no-cache) and open its index.html
-//   --url <url>        or open an already-running site
+//   --url <url>        or open an already-running site (then --project is required)
+//   --project <folder> the project the screenshots belong to (default: --dir)
+//   --task <id>        task number, e.g. 001 (required)
 //   --path <path>      page path to open (default /)
-//   --out <folder>     where to save screenshots (required)
 //   --name <label>     prefix for screenshot files (default "page")
 //   --widths <list>    viewport widths, comma-separated (default 1280,375)
 //   --find <text>      report how many visible elements contain this text (repeatable)
@@ -22,6 +26,7 @@ import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
 import { extname, join, normalize, resolve } from 'node:path';
 import { chromium } from 'playwright';
+import { cleanShots, shotsRoot, config } from './shots.mjs';
 
 const args = process.argv.slice(2);
 const opt = (name, fallback) => {
@@ -31,11 +36,13 @@ const opt = (name, fallback) => {
 const all = (name) => args.flatMap((a, i) => (a === `--${name}` ? [args[i + 1]] : []));
 const flag = (name) => args.includes(`--${name}`);
 
-const out = opt('out');
-if (!out || (!opt('dir') && !opt('url'))) {
-  console.error('Usage: node tools/check-page.mjs (--dir <folder> | --url <url>) --out <folder> [options]');
+const project = opt('project', opt('dir'));
+const task = opt('task');
+if (!project || !task || (!opt('dir') && !opt('url'))) {
+  console.error('Usage: node tools/check-page.mjs (--dir <folder> | --url <url> --project <folder>) --task <id> [options]');
   process.exit(2);
 }
+const out = join(shotsRoot(project), task);
 
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
@@ -62,10 +69,15 @@ const url = new URL(opt('path', '/'), served ? served.base : opt('url')).href;
 const widths = opt('widths', '1280,375').split(',').map(Number);
 const finds = all('find');
 const name = opt('name', 'page');
+const cleaned = await cleanShots(project);
 await mkdir(out, { recursive: true });
+let gitignore = '';
+try { gitignore = await readFile(join(project, '.gitignore'), 'utf8'); } catch {}
+const warnings = gitignore.split('\n').some((l) => l.trim().replace(/\/$/, '') === config.folder)
+  ? [] : [`${config.folder}/ is not in ${project}/.gitignore: add it so screenshots stay out of git`];
 
 const browser = await chromium.launch();
-const report = { url, results: [] };
+const report = { url, shots: out, cleaned, warnings, results: [] };
 try {
   for (const width of widths) {
     const context = await browser.newContext({

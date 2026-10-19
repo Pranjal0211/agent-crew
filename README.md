@@ -9,7 +9,7 @@ This repo holds only the agents; it never holds a product's code.
 |---|---|---|
 | Planner (`planner.md`) | active, tested on Agent Office | Picks the most useful next task and writes a task card |
 | Builder (`builder.md`) | active, built task 001 | Writes the code for a task card and leaves handover notes |
-| Tester (`tester.md`) | active, about to be tested | Checks the result in a real browser, saves it if it passes |
+| Tester (`tester.md`) | active, passed task 001 | Checks the result in a real browser, saves it if it passes |
 | Team lead, Scout, Designer, Checker | parked in `.claude/agents-parked/` | Brought back once the first three work well |
 
 ## How we work on it
@@ -33,3 +33,9 @@ The first command copies each agent's real settings into Agent Office. The secon
 | Parked agents and old skills | `.claude/agents-parked/`, `.claude/skills-parked/` |
 | Dashboard data generator | `scripts/build-dashboard.mjs` |
 | Browser check tool (used by the Tester) | `tools/check-page.mjs` |
+| Screenshot storage and cleanup | `tools/shots.mjs`, settings in `tools/shots.config.json` |
+
+## Test screenshots
+- Saved per task in `<project>/.agent-shots/<task>/`, which is git-ignored. Task cards keep a short written record of what was checked.
+- Deleted automatically every time a test runs: passed after 7 days, failed after 30 (no verdict counts as failed).
+- Later, with GitHub Actions: upload the same `.agent-shots/` folder as a workflow artifact with `retention-days` set to `ciArtifactRetentionDays` (14) from the settings file. No change to the tools needed.
