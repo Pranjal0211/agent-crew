@@ -8,8 +8,8 @@ This repo holds only the agents; it never holds a product's code.
 | Agent | Status | Job |
 |---|---|---|
 | Planner (`planner.md`) | active, tested on Agent Office | Picks the most useful next task and writes a task card |
-| Builder (`builder.md`) | active, about to be tested | Writes the code for a task card and leaves handover notes |
-| Tester (`qa.md`) | active, draft | Checks the result in a real browser |
+| Builder (`builder.md`) | active, built task 001 | Writes the code for a task card and leaves handover notes |
+| Tester (`tester.md`) | active, about to be tested | Checks the result in a real browser, saves it if it passes |
 | Team lead, Scout, Designer, Checker | parked in `.claude/agents-parked/` | Brought back once the first three work well |
 
 ## How we work on it
@@ -32,3 +32,4 @@ The first command copies each agent's real settings into Agent Office. The secon
 | Active agents | `.claude/agents/*.md` |
 | Parked agents and old skills | `.claude/agents-parked/`, `.claude/skills-parked/` |
 | Dashboard data generator | `scripts/build-dashboard.mjs` |
+| Browser check tool (used by the Tester) | `tools/check-page.mjs` |
