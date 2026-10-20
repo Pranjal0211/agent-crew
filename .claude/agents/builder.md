@@ -27,7 +27,10 @@ node tools/decision.mjs check <project folder> <NNN>
   Reply: "Task NNN is waiting for the owner's design approval." Nobody but the owner can unblock this.
 - **Exit 0 with `"approved": true`:** the prototype at `file` is the **approved design**. It is the source of truth
   for how this task looks. Open it, and its screenshots in `.agent-shots/<NNN>/` if present.
-- **Exit 0 with `"needsDesign": false`:** no design step; continue as normal.
+- **Exit 0 with `"needsDesign": false`:** no design step of its own. If `system` is set, the owner approved a
+  **design system** (the prototype at `system.file`): everything you add or change must follow it. Reuse its
+  colors, fonts, spacing and parts; anything new must look like it belongs there. Open it before you build.
+  If `system` is null, follow the page's existing style.
 
 Never edit `decision.md`, and never change a card's status to `design approved` yourself.
 

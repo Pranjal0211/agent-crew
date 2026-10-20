@@ -8,8 +8,10 @@
 //
 // record: appends to design/NNN-*/decision.md (never rewrites past entries) and updates the task card's
 //         status: "design approved" or "changes requested".
-// check:  prints JSON { needsDesign, approved, version, option, file } and exits 0 if the Builder may
-//         start (no design needed, or a design is approved), 1 if it must wait.
+// check:  prints JSON { needsDesign, approved, version, option, file, system } and exits 0 if the Builder
+//         may start (no design needed, or a design is approved), 1 if it must wait.
+//         system: the approved design system every task follows (newest design/NNN-design-system/ with an
+//         Approved line), as { task, version, option, file }, or null if there is none yet.
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
@@ -64,13 +66,25 @@ function record(project, task, { version, outcome, option, words }) {
   console.log(`Recorded: ${label} on ${version}.`);
 }
 
+function designSystem(project) {
+  const dir = join(project, 'design');
+  if (!existsSync(dir)) return null;
+  const folders = readdirSync(dir).filter((f) => /^\d{3}-design-system$/.test(f)).sort().reverse();
+  for (const f of folders) {
+    const path = join(dir, f, 'decision.md');
+    const m = existsSync(path) && approvedLine(readFileSync(path, 'utf8'));
+    if (m) return { task: f.slice(0, 3), version: m[1], option: m[2], file: m[3] };
+  }
+  return null;
+}
+
 function check(project, task) {
   const { card, design } = locate(project, task);
   const cardText = readFileSync(card, 'utf8');
   const needsDesign = /^Needs design: yes/im.test(cardText) || /^## Design$/m.test(cardText) || Boolean(design);
   const decision = design && existsSync(join(design, 'decision.md')) ? readFileSync(join(design, 'decision.md'), 'utf8') : '';
   const m = approvedLine(decision);
-  const result = { needsDesign, approved: Boolean(m), version: m?.[1] ?? null, option: m?.[2] ?? null, file: m?.[3] ?? null };
+  const result = { needsDesign, approved: Boolean(m), version: m?.[1] ?? null, option: m?.[2] ?? null, file: m?.[3] ?? null, system: designSystem(project) };
   console.log(JSON.stringify(result, null, 2));
   process.exit(!needsDesign || result.approved ? 0 : 1);
 }

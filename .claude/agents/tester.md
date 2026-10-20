@@ -71,7 +71,13 @@ If it says `"approved": true`, the prototype at `file` is the **source of truth*
   contradicts (other wording, a kept old header), that's still a mismatch and a **fail**. Only parts that are
   clearly prototype-only tools (e.g. a "Try a state" switcher or a specimen section) may be left out.
 
-If `"needsDesign": false`, skip this and write "no design step" in the notes.
+If `"needsDesign": false` but `system` is set, the owner approved a **design system** (`system.file`). Screenshot it
+(same command, `--name design-system`) and compare the parts this task added or changed: they must use the
+system's colors, fonts, spacing and parts. A new color, font or style that isn't in the system, or a part that
+clearly doesn't belong, is a **fail**: the owner approved the system. Small polish stays a backlog note.
+Write `Design match: follows design system (008 v2 B)` or the differences.
+
+If `"needsDesign": false` and `system` is null, write "no design step" in the notes.
 
 ### 4. Check that nothing broke
 Open the page in its normal state too. Errors in the JSON, sideways scrolling, or anything that worked before
