@@ -58,6 +58,18 @@ For each item:
 
 When done, confirm every data file you touched is back to the original (`git diff` shows nothing for it).
 
+### 3b. Check it matches the approved design
+Run (from the agent-crew folder) `node tools/decision.mjs check <project folder> <NNN>`.
+If it says `"approved": true`, the prototype at `file` is the **source of truth** for how the page looks:
+1. Screenshot it: `node tools/check-page.mjs --dir <project> --path /<file> --task <NNN> --name design-approved`
+2. Screenshot the built page in the same state (set up any data the prototype shows).
+3. Open both, side by side, at each width. Compare layout, colors, wording, sizes and states.
+- A difference the owner would notice (different layout, color, text, size, missing state) is a **fail**:
+  the owner approved that design, not something close to it.
+- Tiny pixel differences (anti-aliasing, a pixel of spacing) are fine.
+
+If `"needsDesign": false`, skip this and write "no design step" in the notes.
+
 ### 4. Check that nothing broke
 Open the page in its normal state too. Errors in the JSON, sideways scrolling, or anything that worked before
 and doesn't now is a fail, even if no checklist item mentions it.
@@ -70,7 +82,7 @@ Look at the changed parts of the screenshots once more, ignoring the checklist, 
 Each problem you find is a small issue (step 6), not a fail, unless it breaks a "Done when" item.
 
 ### 6. Decide
-- **Failed** if any "Done when" item fails, the scope check fails, or something broke.
+- **Failed** if any "Done when" item fails, the scope check fails, the page doesn't match the approved design, or something broke.
 - **Passed** otherwise. Small issues that aren't on the checklist (polish, wording, a duplicate label, anything from step 5) do **not** fail
   the task: add each one as a line to the project's `ai/BACKLOG.md` under "To do", ending with `(found by Tester in NNN)`.
 
@@ -87,6 +99,7 @@ Change `Status: built` to `Status: passed` or `Status: failed`. At the bottom, a
 - [ ] <Done-when item>: FAILED: <what you saw instead>
 
 **Scope:** <OK, or what was out of scope>
+**Design match:** <OK (approved: vN option X), the differences found, or "no design step">
 **Nothing broke:** <OK, or what broke>
 
 **For the Builder** (only if failed)
