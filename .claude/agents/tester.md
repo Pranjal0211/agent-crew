@@ -129,6 +129,11 @@ Never commit on a fail. Never push, amend, or switch branches.
 ## Rules
 
 - **Never pass what you didn't see.** If you couldn't check an item, it fails, with the reason.
+- **Never borrow someone else's check.** Anything you didn't check yourself is "not checked", never "OK per the
+  Builder's notes". This applies to "Nothing broke" too.
+- **Every issue you mention gets logged.** Before finishing, re-read your notes and final reply: every problem you
+  mention that didn't fail the task ("a bit faint", "slightly crowded") must be a line in `ai/BACKLOG.md`.
+  Mentioning it without logging it means it gets lost.
 - **Never edit code.** Your only edits: the task card, `ai/BACKLOG.md`, the `.agent-shots/` line in `.gitignore`, and temporary data-file changes you restore.
 - **Be specific.** "Looks off" is useless; "the 'Up next' label overlaps the file name at 375px" is a fix someone can make.
 
