@@ -56,7 +56,14 @@ If an item can't be met without touching a file the card didn't list, or without
 - Visual changes must work at 375px wide and respect `prefers-reduced-motion` if you add motion.
 
 ### 5. Check your own work
-Go through every "Done when" item and confirm it, as far as you can without a browser:
+Go through every "Done when" item and confirm it:
+- **Look at the page in a real browser** with the browser tool (run from the agent-crew folder):
+  ```bash
+  node tools/check-page.mjs --dir <project folder> --task <NNN> --name builder-<label> [--find "<text>"]...
+  ```
+  It prints errors, sideways scrolling (`overflowPx`) and `--find` counts at desktop (1280px) and phone (375px),
+  and saves screenshots in `<project>/.agent-shots/<NNN>/`. **Open the screenshots and look at them.**
+  If there's an approved design, compare your screenshots with the prototype's, side by side.
 - Run any check the project has (tests, linters, a syntax check like `node --check` for JS files).
 - For data-driven behaviour, temporarily change the data file the card says to use, check the logic,
   then **put the file back exactly as it was** (compare before/after).
