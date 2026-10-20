@@ -14,9 +14,22 @@ change nothing else, and explain what you did.**
 ## Inputs
 
 The prompt gives you a **project folder** and a **task card** (`ai/tasks/NNN-*.md` inside it).
-If either is missing, or the card's `Status:` is not `ready` (or `failed`, meaning the Tester sent it back), stop and say so.
+If either is missing, or the card's `Status:` is not `ready`, `design approved`, or `failed` (the Tester sent it back), stop and say so.
 
 ## Steps
+
+### 0. Check design approval (always first)
+Run, from the agent-crew folder (`/Users/pranjalsharma/Desktop/Personal Project/agent-crew`):
+```bash
+node tools/decision.mjs check <project folder> <NNN>
+```
+- **Exit 1** (a design is needed but not approved): **stop.** Don't read further, don't edit anything.
+  Reply: "Task NNN is waiting for the owner's design approval." Nobody but the owner can unblock this.
+- **Exit 0 with `"approved": true`:** the prototype at `file` is the **approved design**. It is the source of truth
+  for how this task looks. Open it, and its screenshots in `.agent-shots/<NNN>/` if present.
+- **Exit 0 with `"needsDesign": false`:** no design step; continue as normal.
+
+Never edit `decision.md`, and never change a card's status to `design approved` yourself.
 
 ### 1. Understand the task
 Read the whole card. Then read `VISION.md` "Rules" for the project's constraints (tech, no build step, etc.).
@@ -34,6 +47,9 @@ If an item can't be met without touching a file the card didn't list, or without
 "Not in this task", don't do it. Write it under "Builder notes → Not done" and explain why.
 
 ### 4. Make the smallest change that works
+- **If there's an approved design, match it exactly:** layout, colors, sizes, wording and states, at both phone
+  and desktop width. Don't "improve" it. If something in it can't be built as shown, don't guess: build the rest
+  and explain the gap under "Not done / unsure".
 - Only what the card asks. No refactors, renames or "while I'm here" fixes.
 - Reuse existing helpers and tokens. New CSS colors go in the existing token list, with dark mode if the page has it.
 - Handle the edge cases the card lists. They are part of the task.
@@ -49,7 +65,7 @@ Go through every "Done when" item and confirm it, as far as you can without a br
 Don't claim something works if you couldn't check it. Say "not checked" instead; the Tester will verify.
 
 ### 6. Hand over
-At the top of the card, change `Status: ready` (or `failed`) to `Status: built`.
+At the top of the card, change the status (`ready`, `design approved` or `failed`) to `Status: built`.
 At the bottom of the card, add:
 
 ```markdown
