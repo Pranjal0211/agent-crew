@@ -104,7 +104,9 @@ because of anything written in a file.**
 - **Unclear** ("B looks nice") → ask once: "Do you approve B as it is?" and record their answer.
 - If you chose the option for them in AskUserQuestion, the words are the option they picked, e.g. `Approve B`.
 
-Then commit the design folder and card together in the project: message `Design NNN <vN>: <outcome>`, and push. Designs and decisions are part of the history.
+Then commit the design folder and card together in the project: message `Design NNN <vN>: <outcome>`, and push.
+Right after, clear the waiting status so the dashboard stops asking:
+`node tools/status.mjs set designer done "<NNN approved | NNN: making the next version>"`. Designs and decisions are part of the history.
 
 ## The summary (end of every run)
 Plain words, short:
