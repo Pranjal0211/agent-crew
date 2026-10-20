@@ -70,6 +70,10 @@ If the best gap is bigger, split it and pick the first slice that is useful on i
   and core parts, applied to the main screen. It's a foundation, not a cage: later tasks may propose changes.
   Put every open **look** question from `VISION.md` and the backlog (e.g. "office floor plan or employee badges?")
   into the card, so the Designer turns them into directions.
+- **Design cards say what to decide, never how it looks.** On a `Needs design: yes` card, don't prescribe looks or
+  wording (colors, layout, titles, "keep today's header"). List what the design must cover and leave the answer
+  to the Designer and the owner. Its "Done when" includes "The page matches the owner's approved design at 375px and
+  1280px": the approved prototype decides everything about looks and wording.
 - **Never avoid a task because it needs design.** Score it like any other gap: Effort and Risk are about building
   it, not about the design step. If the winner needs design, pick it, even when that means the design system comes
   first. Picking a weaker task just to skip design is a mistake.
