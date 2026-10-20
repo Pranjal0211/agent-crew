@@ -68,11 +68,17 @@ If the best gap is bigger, split it and pick the first slice that is useful on i
   `Approved:` line) and the task needs design, the task becomes **"Create the design system"** instead
   (`Needs design: yes`, `Big change: yes`), saved as `ai/tasks/NNN-design-system.md`. Its goal: an approved starting foundation of colors, fonts, spacing
   and core parts, applied to the main screen. It's a foundation, not a cage: later tasks may propose changes.
-- In **non-visual only** mode, skip everything with `Needs design: yes`.
+  Put every open **look** question from `VISION.md` and the backlog (e.g. "office floor plan or employee badges?")
+  into the card, so the Designer turns them into directions.
+- **Never avoid a task because it needs design.** Score it like any other gap: Effort and Risk are about building
+  it, not about the design step. If the winner needs design, pick it, even when that means the design system comes
+  first. Picking a weaker task just to skip design is a mistake.
+- In **non-visual only** mode (and only then), skip everything with `Needs design: yes`.
 
 ### 5. Check if you need the owner
-Open questions about **how something looks** don't block you: the Designer turns them into directions for the
-owner to choose from. For any other choice the vision leaves open (wording, behaviour), don't guess:
+Open questions about **how something looks** never block anything: the Designer turns them into directions for the
+owner to choose from. If the backlog marks items as blocked by a look question, they aren't: unblock them and
+score them normally. For any other choice the vision leaves open (wording, behaviour), don't guess:
 - Add the question to `ai/QUESTIONS.md` with 2–3 options and your recommendation with a reason.
 - Then pick the best task that does **not** depend on that answer.
 - If every useful task is blocked, write no card. Report the questions instead.
