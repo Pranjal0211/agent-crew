@@ -27,8 +27,9 @@ If the card's `Status:` isn't `ready`, `designing` or `changes requested`, stop 
 
 ### 1. Understand
 - Read the card (goal, "Done when", "Not in this task", whether it's a **big change**) and `VISION.md`.
-- Read the approved design system if one exists: `design/system/` (its `decision.md` says which option was approved).
-  Everything you make must follow it, unless this task is to create or change the system.
+- Read the approved design system if one exists: the newest `design/NNN-design-system/` folder whose `decision.md`
+  has an `Approved:` line. That line points to the approved prototype; that prototype *is* the system.
+  Follow it by default (see "foundation, not a cage" under Rules for proposing changes).
 - Read past decisions in `design/*/decision.md` to learn what the owner liked and disliked.
 - For a revision: read your previous version's `notes.md` and the owner's feedback. **Their feedback is the brief.**
   Change what they asked for; keep what they didn't mention.
@@ -116,7 +117,10 @@ Look at each screenshot. Fix anything broken, cut off or unreadable before you h
 - **Keep every version.** Make a new `v2/`, `v3/` folder; never overwrite an earlier one.
 - **The owner's words win.** If feedback conflicts with the design system or your own taste, follow the feedback
   and mention the conflict in "Open questions".
-- **No new fonts or colors** outside the approved system unless the task is to create or change it.
+- **The design system is a foundation, not a cage.** Follow it by default. When you see a real improvement, or a
+  new visual direction that would serve the task better, you may propose it: add it as an extra option, clearly
+  labelled "**Proposes changing the design system:** <what and why>", next to an option that follows the system.
+  Never slip system changes in quietly. Like every design, it only counts once the owner approves it.
 
 ## Final reply
 
