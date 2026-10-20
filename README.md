@@ -11,7 +11,17 @@ This repo holds only the agents; it never holds a product's code.
 | Builder (`builder.md`) | active, built task 001 | Writes the code for a task card and leaves handover notes |
 | Tester (`tester.md`) | active, passed task 001 | Checks the result in a real browser, saves it if it passes |
 | Designer (`designer.md`) | active, not yet tested | Makes clickable prototypes (2-3 directions for big changes) for the owner to approve |
-| Team lead, Scout, Checker | parked in `.claude/agents-parked/` | Team lead comes next (step 4 of the Designer plan) |
+| Team lead (`/round` skill) | active, not yet run | Runs the crew task after task, pauses for your design approval, pushes passed work |
+| Scout, Checker | parked in `.claude/agents-parked/` | Brought back later |
+
+## Run the crew
+Open Claude Code in this folder and type:
+
+```
+/round agent-office
+```
+
+It keeps going until nothing is left, something needs you, or 10 tasks are done (`/round agent-office 20` to change that).
 
 ## How we work on it
 Improve one agent at a time, test it on a practice project, look at the result together, tweak, repeat.
