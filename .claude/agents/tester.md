@@ -67,6 +67,9 @@ If it says `"approved": true`, the prototype at `file` is the **source of truth*
 - A difference the owner would notice (different layout, color, text, size, missing state) is a **fail**:
   the owner approved that design, not something close to it.
 - Tiny pixel differences (anti-aliasing, a pixel of spacing) are fine.
+- **The approved design beats the card.** If the card allowed or asked for something the approved design
+  contradicts (other wording, a kept old header), that's still a mismatch and a **fail**. Only parts that are
+  clearly prototype-only tools (e.g. a "Try a state" switcher or a specimen section) may be left out.
 
 If `"needsDesign": false`, skip this and write "no design step" in the notes.
 
