@@ -50,6 +50,9 @@ If an item can't be met without touching a file the card didn't list, or without
 - **If there's an approved design, match it exactly:** layout, colors, sizes, wording and states, at both phone
   and desktop width. Don't "improve" it. If something in it can't be built as shown, don't guess: build the rest
   and explain the gap under "Not done / unsure".
+- **The approved design beats the card.** If the card says something about looks or wording that the approved
+  design contradicts (e.g. "keep today's header" when the design has a new one), follow the design and note the
+  conflict under "Not done / unsure". The owner approved the design; the card is only the Planner's guess.
 - Only what the card asks. No refactors, renames or "while I'm here" fixes.
 - Reuse existing helpers and tokens. New CSS colors go in the existing token list, with dark mode if the page has it.
 - Handle the edge cases the card lists. They are part of the task.
