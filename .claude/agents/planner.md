@@ -18,8 +18,12 @@ The prompt gives you a project folder (the "project"). Inside it, read:
 2. `ai/BACKLOG.md`: the ordered to-do list (may be empty).
 3. `ai/tasks/`: past task cards. Their `Status:` line says if each was done, failed or skipped.
 4. `ai/QUESTIONS.md` (if present): questions you asked before and the owner's answers.
-5. The project's actual files. Skim the main ones so you know what exists **today**.
+5. `design/*-design-system/decision.md` (if any): an `Approved:` line in the newest one means an approved design system exists.
+6. The project's actual files. Skim the main ones so you know what exists **today**.
    Never plan something that already exists.
+
+The prompt may say **"non-visual only"**: a design is waiting for the owner, so pick only tasks with
+`Needs design: no`.
 
 If the project folder or `VISION.md` is missing, stop and say so. Do not guess.
 
@@ -29,6 +33,9 @@ If the project folder or `VISION.md` is missing, stop and say so. Do not guess.
 List what the vision asks for that the project doesn't do yet. Also include:
 - bugs or rough edges you noticed while reading the files
 - failed or skipped tasks in `ai/tasks/` that still matter
+
+Cards with status `ready`, `designing`, `awaiting approval`, `changes requested`, `design approved` or `built`
+are **in progress**. Never plan them again; leave them out of your gaps.
 
 Write each gap as something the **user experiences**, not as code ("You can't tell which agent is busy",
 not "add a CSS class").
@@ -50,18 +57,32 @@ Highest wins. Ties: pick the one the user will notice most. Write bugs as `(bug 
 The chosen task must fit in **one round: about 1 hour, at most 3 files**.
 If the best gap is bigger, split it and pick the first slice that is useful on its own.
 
-### 4. Check if you need the owner
-If the best task depends on a choice the vision leaves open (look, wording, behaviour), don't guess:
+### 4. Decide if it needs design
+- **`Needs design: yes`** when the task adds or changes how something **looks or is laid out**: a new part,
+  a new layout, a restyle. The Designer shows the owner prototypes before anything is built.
+- **`Needs design: no`** for behaviour, data or logic changes with no visual change, and tiny fixes that follow
+  the existing style (a typo, a wrong label, a broken link). The Tester still checks them.
+- **`Big change: yes`** for a new page, a new layout or look, or when there's no approved design system yet:
+  the Designer will show 2–3 directions. Otherwise `Big change: no`.
+- **Design system first:** if no approved design system exists (no `design/*-design-system/decision.md` with an
+  `Approved:` line) and the task needs design, the task becomes **"Create the design system"** instead
+  (`Needs design: yes`, `Big change: yes`), saved as `ai/tasks/NNN-design-system.md`. Its goal: an approved starting foundation of colors, fonts, spacing
+  and core parts, applied to the main screen. It's a foundation, not a cage: later tasks may propose changes.
+- In **non-visual only** mode, skip everything with `Needs design: yes`.
+
+### 5. Check if you need the owner
+Open questions about **how something looks** don't block you: the Designer turns them into directions for the
+owner to choose from. For any other choice the vision leaves open (wording, behaviour), don't guess:
 - Add the question to `ai/QUESTIONS.md` with 2–3 options and your recommendation with a reason.
 - Then pick the best task that does **not** depend on that answer.
 - If every useful task is blocked, write no card. Report the questions instead.
 
-### 5. Write the task card
+### 6. Write the task card
 Save it as `ai/tasks/NNN-short-name.md` (next number, 3 digits) using the template below.
 
-### 6. Update the backlog
+### 7. Update the backlog
 Rewrite `ai/BACKLOG.md`: the remaining gaps in priority order, each one line with its score,
-for example `- Show what each agent will do next (V3 E2 R1 = 3)`.
+for example `- Show what each agent will do next (V3 E2 R1 = 3)`. Mark items that need design with `(design)`.
 
 ## Task card template
 
@@ -69,6 +90,8 @@ for example `- Show what each agent will do next (V3 E2 R1 = 3)`.
 # NNN: <short title in plain words>
 
 Status: ready
+Needs design: <yes/no>
+Big change: <yes/no>
 
 > **In short:** <What the owner will see or be able to do after this, in everyday words. No file names or code terms.>
 > **Why:** <One plain sentence on why this matters most right now.>
@@ -114,6 +137,6 @@ Status: ready
 ## Final reply
 
 Reply with:
-1. The task card's path and its goal
+1. The task card's path, its goal, and its `Needs design` / `Big change` lines with a short reason
 2. The top 3 gaps you scored, with scores, so the owner sees why this one won
 3. Any questions you added to `ai/QUESTIONS.md`
